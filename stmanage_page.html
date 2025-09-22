@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>مدیریت طلبه‌ها</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <!-- فونت فارسی Vazirmatn -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            padding: 0px;
+            /* فاصله از گوشه صفحه */
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 500;
+
+        }
+
+        .container {
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            position: relative;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            right: 0;
+        }
+
+        .navigation {
+            position: fixed;
+            width: 300px;
+            top: 0;
+            right: 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            transition: right 0.5s ease;
+            overflow: hidden;
+            z-index: 1000;
+
+        }
+
+        .navigation.active {
+            width: 60px;
+        }
+
+        .navigation ul {
+            position: absolute;
+
+            top: 0;
+            right: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navigation ul li {
+            position: relative;
+            list-style: none;
+            width: 100%;
+
+        }
+
+        .navigation ul li:hover {
+            background: #52b19b;
+            cursor: pointer;
+            transition: 1s;
+
+        }
+
+        .navigation ul li:nth-child(1) {
+            margin-bottom: 20px;
+        }
+
+        .navigation ul li:nth-child(1):hover {
+            background: transparent;
+        }
+
+        .navigation ul li a {
+            position: relative;
+            display: block;
+            width: 100%;
+            display: flex;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .navigation ul li a .icon {
+            position: relative;
+            display: block;
+            min-width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+
+        }
+
+        .navigation ul li .icon .fa {
+            color: #fff;
+            font-size: 26spx;
+        }
+
+        .navigation ul li a .title {
+            position: relative;
+            display: block;
+            padding: 0 10px;
+            height: 60px;
+            line-height: 60px;
+            white-space: nowrap;
+        }
+
+        .main {
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            margin-right: 300px;
+            width: calc(100% - 300px);
+            min-height: 100vh;
+            transition: margin-right 0.5s ease, width 0.5s ease;
+            z-index: 1;
+        }
+
+        .main.active {
+            margin-right: 60px;
+            width: calc(100% - 60px);
+            right: 60px;
+        }
+
+        .main .topbar {
+            position: relative;
+
+            width: 100%;
+            background: #52b19b;
+            color: #1d3f37;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            height: 60px;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .main .topbar .toggle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .toggle::before {
+            content: '\f0c9';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            line-height: 60px;
+            font-size: 24px;
+            text-align: center;
+            color: #111;
+
+        }
+
+        .toggle.active {
+            z-index: 1100;
+        }
+
+        /* استایل پایه‌ی تمام دکمه‌های نوار بالا */
+        .btn-topbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* فاصله آیکون و متن */
+            padding: 6px 18px;
+            border-radius: 30px;
+            /* حالت Pill */
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            user-select: none;
+        }
+
+        /* حساب کاربری –‌ روشنِ شیشه‌ای */
+        .btn-user {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-user:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* خروج –‌ گرادیان زرد */
+        .btn-logout {
+            background: linear-gradient(135deg, #ffce00 0%, #ffb300 100%);
+            color: #111;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #ffd740 0%, #ffa000 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* حالت فشرده هنگام کلیک */
+        .btn-topbar:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255 255 255 / 0.15);
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgb(0 0 0 / 0.15);
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            position: relative;
+        }
+
+        .filter-btn {
+            background: #fff;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 8px rgb(0 0 0 / 0.1);
+            transition:
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                color 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            border-color: #52b19b;
+            box-shadow: 0 6px 16px rgb(82 177 155 / 0.5);
+            color: #52b19b;
+        }
+
+        .filter-btn .arrow {
+            border: solid #999;
+            border-width: 0 2px 2px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            transform: rotate(45deg);
+            transition: transform 0.3s ease;
+        }
+
+        .filter-btn.active .arrow {
+            transform: rotate(-135deg);
+            border-color: #52b19b;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgb(0 0 0 / 0.2);
+            list-style: none;
+            padding: 10px 0;
+            margin: 0;
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu li {
+            padding: 10px 20px;
+            cursor: pointer;
+            color: #444;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .dropdown-menu li:hover {
+            background-color: #52b19b;
+            color: #fff;
+            border-radius: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 6px rgb(0 0 0 / 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            box-shadow: 0 0 10px #52b19b;
+        }
+
+        .filter-select .search-select {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-select.search-select input {
+            flex: 1;
+            min-width: 100px;
+            width: 100%;
+            padding-right: 35px;
+            /* جا برای آیکون */
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-size: 0.95rem;
+            transition: box-shadow 0.3s ease;
+            cursor: text;
+        }
+
+        .filter-select.search-select input:focus {
+            outline: none;
+            box-shadow: 0 0 6px #52b19b;
+            background: #fff;
+            color: #000;
+        }
+
+        .filter-select.search-select i.fas.fa-search {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 12px;
+            color: #52b19b;
+            font-size: 1.2rem;
+            pointer-events: auto;
+            /* تا آیکون قابل تعامل باشه */
+            cursor: pointer;
+            /* شکل موس رو دست کن */
+            transition: transform 0.1s ease, color 0.2s ease;
+        }
+
+        .filter-select.search-select i.fas.fa-search:hover {
+            color: #2f7d71;
+            transform: scale(1.1);
+        }
+
+        .filter-select.search-select i.fas.fa-search:active {
+            color: #1c4d43;
+            transform: scale(0.95);
+        }
+
+        .studentList {
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            padding-top: 0;
+
+        }
+
+        .studentList .list {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 530px;
+            top: 20px;
+            color: #fff;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .cardHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cardHeader h2 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .list table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .list table thead th {
+            border-bottom: 1px solid rgba(202, 196, 196, 0.1);
+            font-weight: 600;
+            color: #ffc107;
+        }
+
+        .list table tr {
+            border-radius: 15px;
+        }
+
+        .list table tbody tr {
+            border-bottom: 1px solid rgba(202, 196, 196, 0.1);
+        }
+
+        .list table tr:last-child {
+            border-bottom: none;
+        }
+
+        @media(max-width:992px) {
+            .navigation {
+                right: -300px;
+            }
+
+            .navigation.active {
+                right: 0;
+                width: 300px;
+
+
+            }
+
+            .main {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .main.active {
+                width: calc(100% - 300px);
+                margin-right: 300px;
+
+            }
+
+            .studentList {
+                overflow-x: auto;
+            }
+        }
+
+
+
+        @media (max-width:758px) {
+            .cardHeader h2 {
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .filter-bar {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .filter-select,
+            .search-select {
+                width: 100%;
+            }
+
+            .filter-btn {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .search-select input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width:480px) {
+            body {
+                direction: rtl;
+            }
+
+            .studentList .list {
+                overflow: auto;
+            }
+
+            .studentList .list table {
+                width: 600px;
+
+            }
+
+            .navigation {
+                width: 100%;
+                right: -100%;
+                z-index: 1000;
+            }
+
+            .navigation.active {
+                width: 100%;
+                right: 0;
+            }
+
+            /* Fixed toggle positioning for mobile */
+            .toggle {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+                transition: none !important;
+            }
+
+            .toggle.active {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+            }
+
+            .toggle.active::before {
+                color: #111 !important;
+            }
+
+            .toggle.active::before {
+                color: #fff;
+            }
+
+            .main,
+            .main.active {
+                width: 100%;
+                right: 0;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .btn-topbar {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+            }
+
+            .topbar-btns {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 506px) {
+
+
+            .topbar-btns {
+                gap: 6px;
+            }
+
+            .btn-topbar {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            /* برای اینکه دکمه‌ها خیلی بزرگ نباشن */
+            .btn-topbar span {
+                display: none;
+                /* فقط آیکون‌ها بمونن */
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn-topbar span {
+                display: none;
+                /* Hide text, show only icons */
+            }
+
+            .btn-topbar {
+                padding: 8px;
+                min-width: 40px;
+                justify-content: center;
+            }
+
+            .topbar-btns {
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="width: 100%;">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="images/logo.jpg"
+                                style="width:40px; height:40px; border-radius:50%; margin-top: 8px;">
+                        </span>
+                        <span class="title">
+                            <h3 style="margin-top: 15px;">مدرسه علمیه ثقلین</h3>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="administrator_page.html">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="title">معاونت آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fa fa-users"></i></span>
+                        <span class="title">مدیریت طلبه‌ها </span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span class="title">مدیریت آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-edit"></i></span>
+                        <span class="title">مدیریت نمرات</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-chalkboard-teacher"></i></span>
+                        <span class="title">اساتید و کلاس‌ها</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-file-alt"></i></span>
+                        <span class="title">درخواست‌های آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-chart-bar"></i></span>
+                        <span class="title">گزارش‌گیری</span></a>
+                </li>
+                <li> <a href="#">
+
+                        <span class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="title">تنظیمات و پشتیبانی</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle"> </div>
+                <!-- داخل .topbar -->
+                <div class="topbar-btns d-flex gap-2">
+                    <button class="btn-topbar btn-user">
+                        <i class="fas fa-user"></i>
+                        <span>حساب کاربری</span>
+                    </button>
+
+                    <button class="btn-topbar btn-logout" onclick="logoutUser()">
+                        <span>خروج</span> <i class="fas fa-sign-out-alt"></i>
+
+                    </button>
+                </div>
+            </div>
+            <div class="filter-bar">
+                <div class="filter-select">
+                    <button id="degreeBtn" class="filter-btn">
+                        همه مقاطع
+                        <span class="arrow"></span>
+                    </button>
+                    <ul id="degreeOptions" class="dropdown-menu">
+                        <li data-value="all">همه مقاطع</li>
+                        <li data-value="bachelor">کارشناسی</li>
+                        <li data-value="master">کارشناسی ارشد</li>
+                        <li data-value="phd">دکتری</li>
+                    </ul>
+                </div>
+
+                <div class="filter-select">
+                    <button id="statusBtn" class="filter-btn">
+                        همه وضعیت‌ها
+                        <span class="arrow"></span>
+                    </button>
+                    <ul id="statusOptions" class="dropdown-menu">
+                        <li data-value="all">همه وضعیت‌ها</li>
+                        <li data-value="active">درحال تحصیل</li>
+                        <li data-value="leave">مرخصی</li>
+                        <li data-value="graduated">فارغ‌التحصیل</li>
+                    </ul>
+                </div>
+
+                <div class="filter-select search-select">
+                    <input id="searchInput" type="text" placeholder="جستوجو بر اساس نام یا کد طلبه" />
+                    <i class="fas fa-search"></i>
+                </div>
+
+            </div>
+            <div class="studentList  justify-content-between mb-3">
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>لیست طلبه‌ها</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>نام</th>
+                                <th>کد طلبه</th>
+                                <th>مقطع تحصیلی</th>
+                                <th>وضعیت تحصیلی</th>
+                                <th>تاریخ پذیرش</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <tr data-href="student_detail.html?id=1">
+
+                                <td><a href="studentDetails_page.html">محمد احمدی</a></td>
+                                <td>12345</td>
+                                <td data-degree="bachelor">کارشناسی</td>
+                                <td data-status="active">در حال تحصیل</td>
+                                <td>1402/04/25</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-1" title="ویرایش">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" title="حذف">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr data-href="student_detail.html?id=2">
+
+                                <td><a href="studentDetails_page.html">علی رضایی</a></td>
+                                <td>12346</td>
+                                <td data-degree="master">کارشناسی ارشد</td>
+                                <td data-status="graduated">فارغ‌التحصیل</td>
+                                <td>1403/05/25</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary me-1" title="ویرایش">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" title="حذف">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <button class="btn btn-success" onclick="addUser()">+ افزودن طلبه جدید</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // دراپ‌داون باز/بسته شدن
+            function setupDropdown(buttonId, menuId) {
+                const btn = document.getElementById(buttonId);
+                const menu = document.getElementById(menuId);
+
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    // بستن بقیه منوها
+                    document.querySelectorAll('.dropdown-menu').forEach(m => {
+                        if (m !== menu) m.classList.remove('show');
+                    });
+                    const isVisible = menu.classList.contains('show');
+                    if (isVisible) {
+                        menu.classList.remove('show');
+                        btn.classList.remove('active');
+                    } else {
+                        menu.classList.add('show');
+                        btn.classList.add('active');
+                    }
+                });
+
+                menu.querySelectorAll('li').forEach(item => {
+                    item.addEventListener('click', () => {
+                        btn.childNodes[0].textContent = item.textContent + " ";
+                        btn.classList.remove('active');
+                        menu.classList.remove('show');
+                        selectedDegree = buttonId === 'degreeBtn' ? item.dataset.value : selectedDegree;
+                        selectedStatus = buttonId === 'statusBtn' ? item.dataset.value : selectedStatus;
+                        filterTable();
+                    });
+                });
+            }
+
+            setupDropdown('degreeBtn', 'degreeOptions');
+            setupDropdown('statusBtn', 'statusOptions');
+
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            });
+
+            // فیلتر ترکیبی
+            let selectedDegree = 'all';
+            let selectedStatus = 'all';
+            const searchInput = document.getElementById('searchInput');
+
+            searchInput.addEventListener('input', filterTable);
+
+            function filterTable() {
+                const searchVal = searchInput.value.trim().toLowerCase();
+
+                document.querySelectorAll('#studentsTableBody tr').forEach(row => {
+                    const name = row.children[1].textContent.toLowerCase();
+                    const code = row.children[2].textContent.toLowerCase();
+                    const degree = row.children[3].dataset.degree;
+                    const status = row.children[4].dataset.status;
+
+                    const matchesDegree = selectedDegree === 'all' || degree === selectedDegree;
+                    const matchesStatus = selectedStatus === 'all' || status === selectedStatus;
+                    const matchesSearch = name.includes(searchVal) || code.includes(searchVal);
+
+                    if (matchesDegree && matchesStatus && matchesSearch) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+
+
+    <script>
+
+        document.querySelector(".toggle").addEventListener("click", function () {
+            document.querySelector(".toggle").classList.toggle("active");
+            document.querySelector(".navigation").classList.toggle("active");
+            document.querySelector(".main").classList.toggle("active");
+        });
+
+    </script>
+    <script>
+        function logoutUser() {
+            // پاک کردن اطلاعات ذخیره شده سمت کاربر (اختیاری ولی مفید)
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // هدایت به صفحه لاگین
+            window.location.href = "index.html"; // آدرس صفحه لاگینت
+        }
+    </script>
+    <script>
+        function addUser() {
+            // هدایت به صفحه لاگین
+            window.location.href = "addNewStudent.html"; // آدرس صفحه لاگینت
+        }
+    </script>
+    <script>
+        /* ---------- خواندن طلبه‌های موقت و رندر در جدول ---------- */
+        function loadTempStudents() {
+            const students = JSON.parse(localStorage.getItem('tempStudents')) || [];
+            const tbody = document.getElementById('studentsTableBody');
+
+            students.forEach(stu => {
+                const tr = document.createElement('tr');
+                tr.dataset.href = `student_detail.html?code=${stu.code}`;
+                tr.innerHTML = `
+            <td><a href="studentDetails_page.html">${stu.name}</a></td>
+            <td>${stu.code}</td>
+            <td data-degree="${stu.degree}">${stu.degree}</td>
+            <td data-status="${stu.status}">در حال تحصیل</td>
+            <td>${stu.date}</td>
+            <td>
+                <button class="btn btn-sm btn-primary me-1" title="ویرایش"><i class="fa-solid fa-pen-to-square"></i></button>
+                <button class="btn btn-sm btn-danger delete-btn" title="حذف"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        `;
+                tbody.appendChild(tr);
+            });
+        };
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const tbody = document.querySelector(' tbody');
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach((row, index) => {
+                // اول یه سلول شماره ردیف می‌سازیم
+                const cell = document.createElement('td');
+                cell.textContent = index + 1;
+
+                // سلول رو به ابتدای ردیف اضافه می‌کنیم
+                row.insertBefore(cell, row.firstChild);
+            });
+        });
+    </script>
+    >
+    <script>
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".delete-btn")) {
+                const btn = e.target.closest(".delete-btn");
+                const code = btn.dataset.code;
+
+                if (confirm("آیا از حذف این طلبه مطمئن هستید؟")) {
+                    // 1. گرفتن لیست از localStorage
+                    let students = JSON.parse(localStorage.getItem("tempStudents")) || [];
+
+                    // 2. حذف طلبه با کد موردنظر
+                    students = students.filter(s => s.code !== code);
+
+                    // 3. ذخیره لیست جدید
+                    localStorage.setItem("students", JSON.stringify(students));
+                    
+                    // 4. حذف سطر از جدول
+                    const row = btn.closest("tr");
+                    row.remove();
+
+                    // 5. آپدیت شماره ردیف‌ها (اختیاری)
+                    document.querySelectorAll("#studentsTableBody tr").forEach((row, i) => {
+                        row.querySelector("td").textContent = i + 1;
+                    });
+                }
+            }
+        });
+
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", loadTempStudents);
+
+    </script>
+</body>
+
+</html>

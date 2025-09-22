@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>معاونت آموزشی</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <!-- فونت فارسی Vazirmatn -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --mainGradient: linear-gradient(to left, #1d3f37, #52b19b);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        body {
+            padding: 0px;
+            /* فاصله از گوشه صفحه */
+            background: var(--mainGradient);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 500;
+
+        }
+
+        .container {
+
+            position: relative;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            max-width: 100%;
+            right: 0;
+        }
+
+        .navigation {
+            position: fixed;
+            width: 300px;
+
+            top: 0;
+            right: 0;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            border-left: 2px solid rgba(255, 255, 255, 0.1);
+            transition: right 0.5s ease;
+            overflow: hidden;
+            z-index: 1000;
+
+        }
+
+        .navigation.active {
+            width: 60px;
+        }
+
+        .navigation ul {
+            position: absolute;
+
+            top: 0;
+            right: 0;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .navigation ul li {
+            position: relative;
+            list-style: none;
+            width: 100%;
+
+        }
+
+        .navigation ul li:hover {
+            background: #52b19b;
+            cursor: pointer;
+            transition: 1s;
+
+        }
+
+        .navigation ul li:nth-child(1) {
+            margin-bottom: 20px;
+        }
+
+        .navigation ul li:nth-child(1):hover {
+            background: transparent;
+        }
+
+        .navigation ul li a {
+            position: relative;
+            display: block;
+            width: 100%;
+            display: flex;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .navigation ul li a .icon {
+            position: relative;
+            display: block;
+            min-width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+
+        }
+
+        .navigation ul li .icon .fa {
+            color: #fff;
+            font-size: 26px;
+        }
+
+        .navigation ul li a .title {
+            position: relative;
+            display: block;
+            padding: 0 10px;
+            height: 60px;
+            line-height: 60px;
+            white-space: nowrap;
+        }
+
+        .main {
+            background: var(--mainGradient);
+            margin-right: 300px;
+            width: calc(100% - 300px);
+            min-height: 100vh;
+            background: #f5f5f5;
+            transition: margin-right 0.5s ease, width 0.5s ease;
+        }
+
+        .main.active {
+            margin-right: 60px;
+            width: calc(100% - 60px);
+            right: 60px;
+
+
+        }
+
+        .main .topbar {
+            position: relative;
+            width: 100%;
+            background: #52b19b;
+            color: #1d3f37;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            height: 60px;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .main .topbar .toggle {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .toggle::before {
+            content: '\f0c9';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            line-height: 60px;
+            font-size: 24px;
+            text-align: center;
+            color: #111;
+
+        }
+
+        .search {
+            position: relative;
+            width: 400px;
+            margin: 0 10px;
+        }
+
+        .search label {
+            position: relative;
+            width: 100%;
+        }
+
+        .search label input {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            padding: 5px 20px;
+            padding-right: 35px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: bold;
+
+        }
+
+        .search label input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+
+        }
+
+        .search label .fa {
+            position: absolute;
+            right: 15px;
+            top: 12px;
+        }
+
+        /* استایل پایه‌ی تمام دکمه‌های نوار بالا */
+        .btn-topbar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* فاصله آیکون و متن */
+            padding: 6px 18px;
+            border-radius: 30px;
+            /* حالت Pill */
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            user-select: none;
+        }
+
+        /* حساب کاربری –‌ روشنِ شیشه‌ای */
+        .btn-user {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-user:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* خروج –‌ گرادیان زرد */
+        .btn-logout {
+            background: linear-gradient(135deg, #ffce00 0%, #ffb300 100%);
+            color: #111;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #ffd740 0%, #ffa000 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* حالت فشرده هنگام کلیک */
+        .btn-topbar:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+
+
+
+
+        .cardBox {
+            background: var(--mainGradient);
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .cardBox .card {
+            position: relative;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border-radius: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            cursor: pointer;
+            padding: 15px 20px;
+            gap: 15px;
+            animation: fadeInUp 0.7s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .cardBox .card:hover {
+            transform: scale(1.02);
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .cardBox .card>div:first-child {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+            /* بخش متن فضای بیشتری می‌گیرد */
+            min-width: 0;
+            /* برای درست کار کردن overflow */
+        }
+
+        .cardBox .card .numbers {
+            position: relative;
+            font-size: 1.5em;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cardBox .card .iconBox {
+            font-size: 2.5em;
+
+            color: #ffc107;
+            flex-shrink: 0;
+
+        }
+
+        .cardBox .card .cardName {
+            font-size: 0.95em;
+            color: #fff;
+            margin-top: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .details {
+            background: var(--mainGradient);
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            padding-top: 0;
+            display: grid;
+            grid-gap: 20px;
+            grid-template-columns: 1.5fr 1fr;
+        }
+
+        .details .recentAnnouncements,
+        .details .recentReminders {
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 530px;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .cardHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cardHeader h2 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .cardHeader .btn {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.95rem;
+            padding: 6px 12px;
+            display: inline-block;
+            max-width: 100%;
+            position: relative;
+            background: #ffc107;
+            color: #000;
+            transition: 0.3s;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .cardHeader .btn:hover {
+            background-color: #ffb300;
+            color: #fff;
+        }
+
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .details table thead td {
+            border-bottom: 1px solid rgba(202, 196, 196, 0.1);
+            font-weight: 600;
+            color: #ffc107;
+        }
+
+        .details .recentAnnouncements table tr,
+        .details .recentReminders table tr {
+            border-radius: 15px;
+        }
+
+        .details .recentAnnouncements table tr:last-child,
+        .details .recentReminders table tr:last-child {
+            border-bottom: none;
+        }
+
+        .details .recentAnnouncements table tbody tr:hover,
+        .details .recentReminders table tbody tr:hover {
+            background: rgba(82, 177, 155, 0.2);
+            color: #000;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .details .recentAnnouncements table tr td,
+        .details .recentReminders table tr td {
+            padding: 9px 5px;
+        }
+
+        .details .recentReminders table tbody tr td:last-child,
+        .details .recentReminders table tbody tr td:last-child {
+            text-align: right;
+        }
+
+        .details .recentReminders table tbody tr td:nth-child(2),
+        .details .recentReminders table tbody tr td:nth-child(2) {
+            text-align: right;
+            padding-left: 20px;
+        }
+
+        .details .recentReminders table tbody tr td:nth-child(3),
+        .details .recentReminders table tbody tr td:nth-child(3) {
+            text-align: center;
+        }
+
+        .recentReminders table,
+        .recentAnnouncements table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .recentReminders td:first-child,
+        .recentAnnouncements td:first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .recentAnnouncements h2 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .status {
+            position: relative;
+            padding: 2px 4px;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .checked {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .pending {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .checking {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .waiting {
+            background: #e0f2fe;
+            color: #0c4a6e;
+        }
+
+        .recentAnnouncements table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .recentAnnouncements table td:nth-child(1) {
+            width: 70%;
+            /* ستون عنوان */
+            padding-right: 20px;
+        }
+
+        .recentAnnouncements table td:nth-child(2) {
+            width: 30%;
+            /* ستون تاریخ انتشار */
+        }
+
+        /* make it responsive*/
+        @media(max-width:992px) {
+            .navigation {
+                right: -300px;
+            }
+
+            .navigation.active {
+                right: 0;
+                width: 300px;
+
+
+            }
+
+            .main {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .main.active {
+                width: calc(100% - 300px);
+                margin-right: 300px;
+
+            }
+
+            .cardBox {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .details {
+                overflow-x: auto;
+
+            }
+        }
+
+        @media (max-width:758px) {
+            .details {
+                grid-template-columns: repeat(1, 1fr);
+                overflow: auto;
+            }
+
+            .cardHeader h2 {
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width:480px) {
+            .cardBox {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .details .recentReminders {
+                overflow: auto;
+            }
+
+            .details .recentReminders table {
+                width: 600px;
+
+            }
+
+            .navigation {
+                width: 100%;
+                right: -100%;
+                z-index: 1000;
+            }
+
+            .navigation.active {
+                width: 100%;
+                right: 0;
+            }
+
+            .toggle {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+                transition: none !important;
+            }
+
+            .toggle.active {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+            }
+
+            .toggle.active::before {
+                color: #fff;
+            }
+
+            .main,
+            .main.active {
+                width: 100%;
+                right: 0;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn-topbar span {
+                display: none;
+                /* Hide text, show only icons */
+            }
+
+            .btn-topbar {
+                padding: 8px;
+                min-width: 40px;
+                justify-content: center;
+            }
+
+            .topbar-btns {
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" style="width: 100%;">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <img src="images/logo.jpg"
+                                style="width:40px; height:40px; border-radius:50%; margin-top: 8px;">
+                        </span>
+                        <span class="title">
+                            <h3 style="margin-top: 15px;">مدرسه علمیه ثقلین</h3>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="administrator_page.html">
+                        <span class="icon"><i class="fas fa-home"></i></span>
+                        <span class="title">معاونت آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="stmanage_page.html">
+
+                        <span class="icon"><i class="fa fa-users"></i></span>
+                        <span class="title">مدیریت طلبه‌ها </span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span class="title">مدیریت آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-edit"></i></span>
+                        <span class="title">مدیریت نمرات</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-chalkboard-teacher"></i></span>
+                        <span class="title">اساتید و کلاس‌ها</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-file-alt"></i></span>
+                        <span class="title">درخواست‌های آموزشی</span></a>
+                </li>
+                <li>
+                    <a href="#">
+
+                        <span class="icon"><i class="fas fa-chart-bar"></i></span>
+                        <span class="title">گزارش‌گیری</span></a>
+                </li>
+                 <li> <a href="#">
+
+                        <span class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="title">مدیریت مجوزها</span></a>
+                </li>
+                <li> <a href="#">
+
+                        <span class="icon"><i class="fas fa-cog"></i></span>
+                        <span class="title">تنظیمات و پشتیبانی</span></a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle"> </div>
+                <div class="search">
+                    <label>
+                        <input type="text" placeholder="اینجا جستوجو کنید">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </label>
+                </div>
+                <!-- داخل .topbar -->
+                <div class="topbar-btns d-flex gap-2">
+                    <button class="btn-topbar btn-user">
+                        <i class="fas fa-user"></i>
+                        <span>حساب کاربری</span>
+                    </button>
+
+                    <button class="btn-topbar btn-logout" onclick="logoutUser()">
+                        <span>خروج</span> <i class="fas fa-sign-out-alt"></i>
+
+                    </button>
+                </div>
+
+            </div>
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers">1042</div>
+                        <div class="cardName">تعداد بازدیدهای روزانه</div>
+                    </div>
+                    <div class="iconBox">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">20</div>
+                        <div class="cardName">تعداد درخواست‌‌های آموزشی جدید</div>
+                    </div>
+                    <div class="iconBox">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">9</div>
+                        <div class="cardName">تعداد کلاس‌های برگزارشده امروز</div>
+                    </div>
+                    <div class="iconBox">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+                <div class="card">
+                    <div>
+                        <div class="numbers">60</div>
+                        <div class="cardName">تعداد طلبه‌های فعال</div>
+                    </div>
+                    <div class="iconBox">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="details">
+                <div class="recentReminders">
+                    <div class="cardHeader">
+                        <h2>یادآوری‌‌ها و درخواست‌‌های اخیر</h2>
+                        <a href="#" class="btn">نمایش همه</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>عنوان</td>
+                                <td>تاریخ</td>
+                                <td>درخواست کننده</td>
+                                <td>وضعیت</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>درخواست تجدید نظر در نمره</td>
+                                <td>
+                                    <date>1404/03/29</date>
+                                </td>
+                                <td>طلبه</td>
+                                <td><span class="status checked">بررسی شده</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست سوالات امتحان پایانترم </td>
+                                <td>
+                                    <date>1404/03/03</date>
+                                </td>
+                                <td>معاونت آموزشی</td>
+                                <td><span class="status waiting">منتظر نتیجه</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست مرخصی</td>
+                                <td>
+                                    <date>1404/02/23</date>
+                                </td>
+                                <td>طلبه</td>
+                                <td><span class="status checking"> درحال بررسی</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست سوالات امتحان پایانترم </td>
+                                <td>
+                                    <date>1404/02/22</date>
+                                </td>
+                                <td>معاونت آموزشی</td>
+                                <td><span class="status pending">درحال انتظار</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست تجدید نظر در نمره</td>
+                                <td>
+                                    <date>1404/03/29</date>
+                                </td>
+                                <td>طلبه</td>
+                                <td><span class="status checked">بررسی شده</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست سوالات امتحان پایانترم </td>
+                                <td>
+                                    <date>1404/03/03</date>
+                                </td>
+                                <td>معاونت آموزشی</td>
+                                <td><span class="status waiting">منتظر نتیجه</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست مرخصی</td>
+                                <td>
+                                    <date>1404/02/23</date>
+                                </td>
+                                <td>طلبه</td>
+                                <td><span class="status checking"> درحال بررسی</span></td>
+                            </tr>
+                            <tr>
+                                <td>درخواست سوالات امتحان پایانترم </td>
+                                <td>
+                                    <date>1404/02/22</date>
+                                </td>
+                                <td>معاونت آموزشی</td>
+                                <td><span class="status pending">درحال انتظار</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="recentAnnouncements">
+                    <div class="cardHeader">
+                        <h2>آخرین اطلاعیه‌های آموزشی</h2>
+                        <a href="#" class="btn">نمایش همه</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>عنوان</td>
+                                <td>تاریخ انتشار</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>برگزاری اردوی زیارتی تفریحی </td>
+                                <td>
+                                    <date><span>1404/06/07</span></date>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>تغییر زمان اداری در مهرماه</td>
+                                <td>
+                                    <date><span>1404/06/27</span></date>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>آغاز نیمسال تحصیلی جدید از ۲۳شهریورماه</td>
+
+                                <td>
+                                    <date><span>1404/06/02</span></date>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>برگزاری اردوی زیارتی تفریحی </td>
+
+                                <td>
+                                    <date><span>1404/06/07</span></date>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>تغییر زمان اداری در مهرماه</td>
+
+                                <td>
+                                    <date><span>1404/06/27</span></date>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>آغاز نیمسال تحصیلی جدید از ۲۳شهریورماه</td>
+
+                                <td>
+                                    <date><span>1404/06/02</span></date>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.querySelector(".toggle").addEventListener("click", function () {
+            document.querySelector(".toggle").classList.toggle("active");
+            document.querySelector(".navigation").classList.toggle("active");
+            document.querySelector(".main").classList.toggle("active");
+        });
+
+    </script>
+    <script>
+        function logoutUser() {
+            // پاک کردن اطلاعات ذخیره شده سمت کاربر (اختیاری ولی مفید)
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // هدایت به صفحه لاگین
+            window.location.href = "index.html"; // آدرس صفحه لاگینت
+        }
+    </script>
+</body>
+
+</html>

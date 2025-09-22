@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت مجوزها - نمونه</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+<style>
+body { font-family: Vazirmatn, sans-serif; padding: 20px; background: #f5f5f5; }
+.card { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h2 class="mb-4">مدیریت مجوزها - نمونه</h2>
+
+<div class="card p-3">
+  <h5>انتخاب استاد:</h5>
+  <select class="form-select mb-3" id="teacherSelect">
+    <option value="teacher1">استاد احمدی</option>
+    <option value="teacher2">استاد موسوی</option>
+    <option value="teacher3">استاد رضایی</option>
+  </select>
+
+  <h5>مجوزها:</h5>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="viewStudent" id="perm1">
+    <label class="form-check-label" for="perm1">مشاهده پرونده دانشجو</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="editGrades" id="perm2">
+    <label class="form-check-label" for="perm2">ویرایش نمرات</label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="viewAttendance" id="perm3">
+    <label class="form-check-label" for="perm3">مشاهده حضور و غیاب</label>
+  </div>
+
+  <h5 class="mt-3">محدودیت زمانی:</h5>
+  <input type="date" id="startDate" class="form-control mb-2" placeholder="از تاریخ">
+  <input type="date" id="endDate" class="form-control mb-3" placeholder="تا تاریخ">
+
+  <button class="btn btn-primary" onclick="savePermissions()">ذخیره مجوزها</button>
+</div>
+
+<hr>
+
+<h4>نمایش مجوزهای ذخیره شده (نمونه):</h4>
+<ul id="permissionList"></ul>
+
+<script>
+const permissionList = document.getElementById('permissionList');
+
+function savePermissions() {
+    const teacher = document.getElementById('teacherSelect').value;
+    const perms = [];
+    if(document.getElementById('perm1').checked) perms.push('مشاهده پرونده دانشجو');
+    if(document.getElementById('perm2').checked) perms.push('ویرایش نمرات');
+    if(document.getElementById('perm3').checked) perms.push('مشاهده حضور و غیاب');
+
+    const start = document.getElementById('startDate').value;
+    const end = document.getElementById('endDate').value;
+
+    const data = `${teacher}: [${perms.join(', ')}] از ${start || 'نامشخص'} تا ${end || 'نامشخص'}`;
+
+    const li = document.createElement('li');
+    li.textContent = data;
+    permissionList.appendChild(li);
+
+    alert('مجوزها ذخیره شد (نمونه)');
+}
+</script>
+</body>
+</html>
+

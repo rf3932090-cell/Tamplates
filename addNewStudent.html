@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>افزودن طلبه جدید</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <!-- فونت فارسی Vazirmatn -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            padding: 0px;
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 500;
+
+        }
+
+        .tabs {
+            margin-top: 30px;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+            flex-wrap: nowrap;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            background: #eee;
+            margin-left: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #98e0cf;
+            transition: all 0.25s ease;
+
+        }
+
+        .tab.active {
+            background: #ffc107;
+            font-weight: bold;
+            border-color: #000;
+            color: #000;
+        }
+
+        .topbar-btn {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn-topbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            /* فاصله آیکون و متن */
+            padding: 6px 18px;
+            border-radius: 30px;
+            /* حالت Pill */
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            user-select: none;
+        }
+
+        /* حساب کاربری –‌ روشنِ شیشه‌ای */
+        .btn-user {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-user:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* خروج –‌ گرادیان زرد */
+        .btn-logout {
+            background: linear-gradient(135deg, #ffce00 0%, #ffb300 100%);
+            color: #111;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #ffd740 0%, #ffa000 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* حالت فشرده هنگام کلیک */
+        .btn-topbar:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        h2 {
+            color: #1d3f37;
+            border-bottom: 2px solid #52b19b;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #1d3f37;
+        }
+
+        .btn-nav {
+            margin-top: 20px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #52b19b;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-area:hover {
+            background: #e9ecef;
+            border-color: #1d3f37;
+        }
+
+        .file-upload-area.dragover {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .uploaded-files {
+            margin-top: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 12px 30px;
+
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        /* ========= ریسپانسیو تاپ‌بار تب‌ها ========= */
+        @media (max-width: 576px) {
+            .tabs {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            .tab-list {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+            }
+
+            .tab {
+                flex: 1 1 auto;
+                max-width: 100%;
+                text-align: center;
+                font-size: 0.85rem;
+                padding: 8px 12px;
+            }
+
+            .topbar-btns {
+                width: 100%;
+                justify-content: center;
+                margin-top: 8px;
+            }
+
+            .btn-topbar {
+                font-size: 0.8rem;
+                padding: 4px 10px;
+            }
+        }
+
+        @media (min-width: 577px) and (max-width: 768px) {
+            .tab {
+                font-size: 0.9rem;
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="tabs">
+            <div class="tab-list d-flex">
+                <div class="tab active" data-tab="1">اطلاعات هویتی فرد و خانواده</div>
+                <div class="tab" data-tab="2">اطلاعات تحصیلی</div>
+                <div class="tab" data-tab="3">اطلاعات اداری و رفاهی</div>
+                <div class="tab" data-tab="4">بارگذاری مدارک</div>
+            </div>
+            <div class="topbar-btns d-flex gap-2">
+                <button class="btn-topbar btn-user">
+                    <i class="fas fa-user"></i>
+                    <span>حساب کاربری</span>
+                </button>
+
+                <button class="btn-topbar btn-logout" onclick="logoutUser()">
+                    <span>خروج</span> <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" data-tab="1">
+                <form id="form-tab1">
+                    <h2>اطلاعات فردی</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">نام</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">نام خانودگی</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="idNumber" class="form-label">شماره گذرنامه</label>
+                                <input type="text" class="form-control" id="idNumber" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="studentNumber" class="form-label">کد طلبه</label>
+                                <input type="text" inputmode="numeric" class="form-control" id="studentNumber" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fatherName" class="form-label">نام پدر</label>
+                                <input type="text" class="form-control" id="fatherName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="birthDate" class="form-label">تاریخ تولد</label>
+                                <input type="date" class="form-control" id="birthDate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="nationality" class="form-label">ملیت</label>
+                                <select class="form-select" id="nationality" name="nationality" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="آذربایجان">آذربایجان</option>
+                                    <option value="آلبانی">آلبانی</option>
+                                    <option value="آلمان">آلمان</option>
+                                    <option value="آمریکا">آمریکا</option>
+                                    <option value="افغانستان">افغانستان</option>
+                                    <option value="ازبکستان">ازبکستان</option>
+                                    <option value="امارات">امارات</option>
+                                    <option value="انگلیس">انگلیس</option>
+                                    <option value="ایران">ایران</option>
+                                    <option value="بحرین">بحرین</option>
+                                    <option value="پاکستان">پاکستان</option>
+                                    <option value="تاجیکستان">تاجیکستان</option>
+                                    <option value="ترکیه">ترکیه</option>
+                                    <option value="تونس">تونس</option>
+                                    <option value="چین">چین</option>
+                                    <option value="دیگر">دیگر</option>
+                                    <option value="روسیه">روسیه</option>
+                                    <option value="سوریه">سوریه</option>
+                                    <option value="سودان">سودان</option>
+                                    <option value="عراق">عراق</option>
+                                    <option value="عمان">عمان</option>
+                                    <option value="فرانسه">فرانسه</option>
+                                    <option value="قطر">قطر</option>
+                                    <option value="کرد">کرد</option>
+                                    <option value="کویت">کویت</option>
+                                    <option value="لبنان">لبنان</option>
+                                    <option value="مراکش">مراکش</option>
+                                    <option value="مصر">مصر</option>
+                                    <option value="هند">هند</option>
+                                    <option value="یمن">یمن</option>
+                                    <option value="ژاپن">ژاپن</option>
+                                    <option value="قزاقستان">قزاقستان</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="maritalStatus" class="form-label">وضعیت تاهل</label>
+                                <select class="form-select" id="maritalStatus" name="metiralStatus" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="single">مجرد</option>
+                                    <option value="married">متاهل</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <h2>اطلاعات تماس</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="mobileNumber" class="form-label">شماره همراه</label>
+                                <input type="tel" class="form-control" id="mobileNumber" placeholder="09xxxxxxxxx"
+                                    pattern="^09\d{9}$" maxlength="11" minlength="11" required
+                                    oninvalid="this.setCustomValidity('شماره موبایل باید ۱۱ رقم با پیش‌وند 09 باشد')"
+                                    oninput="this.setCustomValidity('')">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">آدرس ایمیل</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="postelCode" class="form-label">کد پستی</label>
+                                <input type="text" inputmode="numeric" class="form-control" id="postelCode" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address" class="form-label">آدرس محل سکونت</label>
+                                <input type="text" class="form-control" id="address">
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <h2>اطلاعات خانواده</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fatherJob" class="form-label">شغل پدر</label>
+                                <input type="text" class="form-control" id="fatherJob" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fatherEducation" class="form-label">سطح تحصیلات پدر</label>
+                                <select class="form-select" id="fatherEducation" name="fatherEducation" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="دیپلم">دیپلم</option>
+                                    <option value="کارشناسی">کارشناسی</option>
+                                    <option value="کارشناسی ارشد">کارشناسی ارشد</option>
+                                    <option value="دکتری">دکتری</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="motherName" class="form-label">نام مادر</label>
+                                <input type="text" class="form-control" id="motherName" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="motherEducation" class="form-label">سطح تحصیلات مادر</label>
+                                <select class="form-select" id="motherEducation" name="fatherEducation" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="دیپلم">دیپلم</option>
+                                    <option value="کارشناسی">کارشناسی</option>
+                                    <option value="کارشناسی ارشد">کارشناسی ارشد</option>
+                                    <option value="دکتری">دکتری</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="spouseFields" style="display: none;">
+                        <h3>اطلاعات همسر</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="spouseName" class="form-label">نام همسر:</label>
+                                    <input type="text" id="spouseName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="dependents" class="form-label">تعداد فرزندان</label>
+                                    <select class="form-select" id="children" name="children" required>
+                                        <option value="" selected disabled>۰</option>
+                                        <option value="one">۱</option>
+                                        <option value="two">۲</option>
+                                        <option value="three">۳</option>
+                                        <option value="moreThree">بیش از ۳ فرزند</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-nav">
+                        <button type="button" class="btn btn-warning next-tab">بعدی <i
+                                class="fas fa-arrow-left"></i></button>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" data-tab="2">
+                <form id="form-tab2">
+                    <h2>اطلاعات تحصیلی قبلی</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="lastDegree" class="form-label">آخرین مدرک تحصیلی</label>
+                                <select class="form-select" id="lastDegree" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="دیپلم">دیپلم</option>
+                                    <option value="کارشناسی">کارشناسی</option>
+                                    <option value="کارشناسی ارشد">کارشناسی ارشد</option>
+                                    <option value="دکتری">دکتری</option>
+                                    <option value="معادل خارجی">معادل خارجی</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="studyCountry" class="form-label">کشور محل تحصیل</label>
+                                <select class="form-select" id="studyCountry" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="آذربایجان">آذربایجان</option>
+                                    <option value="آلبانی">آلبانی</option>
+                                    <option value="آلمان">آلمان</option>
+                                    <option value="آمریکا">آمریکا</option>
+                                    <option value="افغانستان">افغانستان</option>
+                                    <option value="ازبکستان">ازبکستان</option>
+                                    <option value="امارات">امارات</option>
+                                    <option value="انگلیس">انگلیس</option>
+                                    <option value="ایران">ایران</option>
+                                    <option value="بحرین">بحرین</option>
+                                    <option value="پاکستان">پاکستان</option>
+                                    <option value="تاجیکستان">تاجیکستان</option>
+                                    <option value="ترکیه">ترکیه</option>
+                                    <option value="تونس">تونس</option>
+                                    <option value="چین">چین</option>
+                                    <option value="دیگر">دیگر</option>
+                                    <option value="روسیه">روسیه</option>
+                                    <option value="سوریه">سوریه</option>
+                                    <option value="سودان">سودان</option>
+                                    <option value="عراق">عراق</option>
+                                    <option value="عمان">عمان</option>
+                                    <option value="فرانسه">فرانسه</option>
+                                    <option value="قطر">قطر</option>
+                                    <option value="کرد">کرد</option>
+                                    <option value="کویت">کویت</option>
+                                    <option value="لبنان">لبنان</option>
+                                    <option value="مراکش">مراکش</option>
+                                    <option value="مصر">مصر</option>
+                                    <option value="هند">هند</option>
+                                    <option value="یمن">یمن</option>
+                                    <option value="ژاپن">ژاپن</option>
+                                    <option value="قزاقستان">قزاقستان</option>
+                                    <option value="سایر کشورها">دیگر</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="field" class="form-label">رشته تحصیلی</label>
+                                <input type="text" class="form-control" id="field" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="university" class="form-label">نام دانشگاه/ موسسه</label>
+                                <input type="text" class="form-control" id="university" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="graduationYear" class="form-label">سال فارغ‌التحصیلی</label>
+                                <input type="number" class="form-control" id="graduationYear" min="1300" max="1403"
+                                    dir="rtl">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="gpa" class="form-label">معدل</label>
+                                <input type="text" class="form-control" id="gpa" placeholder="مثال: 18.5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="degreeRecognition" class="form-label">وضعیت تایید مدرک</label>
+                                <select class="form-select" id="degreeRecognition">
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="تایید شده">تایید شده در ایران</option>
+                                    <option value="در حال بررسی">در حال بررسی</option>
+                                    <option value="نیاز به تایید">نیاز به تایید</option>
+                                    <option value="داخلی">مدرک داخلی</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="languageLevel" class="form-label">سطح زبان عربی</label>
+                                <select class="form-select" id="languageLevel">
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="مبتدی">مبتدی</option>
+                                    <option value="متوسط">متوسط</option>
+                                    <option value="پیشرفته">پیشرفته</option>
+                                    <option value="عالی">عالی</option>
+                                    <option value="زبان مادری">زبان مادری</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="foreignDegreeFields" style="display: none;">
+                        <h3>اطلاعات تکمیلی مدارک خارجی</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="equivalentDegree" class="form-label">معادل ایرانی مدرک تحصیلی
+                                        قبلی</label>
+                                    <select class="form-select" id="equivalentDegree">
+                                        <option value="" selected disabled>انتخاب کنید</option>
+                                        <option value="دیپلم">دیپلم</option>
+                                        <option value="کاردانی">کاردانی</option>
+                                        <option value="کارشناسی">کارشناسی</option>
+                                        <option value="کارشناسی ارشد">کارشناسی ارشد</option>
+                                        <option value="دکتری">دکتری</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="recognitionAuthority" class="form-label">مرجع تایید مدرک</label>
+                                    <input type="text" class="form-control" id="recognitionAuthority"
+                                        placeholder="مثال: وزارت علوم، سازمان سنجش">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2>اطلاعات دوره موردنظر</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="desiredCourse" class="form-label">دوره موردنظر</label>
+                                <select class="form-select" id="desiredCourse" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="کارشناسی">کارشناسی</option>
+                                    <option value=" کارشناسی ارشد">کارشناسی ارشد</option>
+                                    <option value="دکتری">دکتری</option>
+                                    <option value="خارج">خارج</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="studyMethod" class="form-label">نحوه تحصیل</label>
+                                <select class="form-select" id="studyMethod" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="حضوری">حضوری</option>
+                                    <option value="غیرحضوری">غیرحضوری</option>
+                                    <option value="نیمه حضوری">نیمه حضوری</option>
+                                    <option value="آنلاین">آنلاین</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="startSemester" class="form-label">ترم شروع تحصیل</label>
+                                <select class="form-select" id="startSemester" required>
+                                    <option value="" selected disabled>انتخاب کنید</option>
+                                    <option value="پاییز 1403">بهار 1403</option>
+                                    <option value="پاییز 1403">پاییز 1403</option>
+                                    <option value="بهار 1404">بهار 1404</option>
+                                    <option value="پاییز 1404">پاییز 1404</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="admitDate" class="form-label">تاریخ پذیرش</label>
+                                <input type="date" class="form-control" id="admitDate" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-nav">
+                        <button type="button" class="btn btn-secondary prev-tab"><i class="fas fa-arrow-right"></i>
+                            قبلی</button>
+                        <button type="button" class="btn btn-warning next-tab">بعدی <i
+                                class="fas fa-arrow-left"></i></button>
+                    </div>
+                </form>
+            </div>
+            <!-- پایین‌تر -->
+            <div class="tab-pane" data-tab="3">
+                <form id="form-tab3">
+                    <h2>وضعیت اقامت </h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">نوع ویزای فعلی</label>
+                                <select class="form-select" id="visaType" required>
+                                    <option value="" disabled selected>انتخاب کنید</option>
+                                    <option value="توریست">توریست</option>
+                                    <option value="دانشجویی">دانشجویی</option>
+                                    <option value="اقامت">اقامت</option>
+                                    <option value="بدون ویزا">بدون ویزا</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">تاریخ انقضای ویزا</label>
+                                <input type="date" class="form-control" id="visaExpiry" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="ownInsurance" class="form-label">بیمه درمانی</label>
+                                <select class="form-select" id="ownInsurance" required>
+                                    <option disabled selected>انتخاب کنید</option>
+                                    <option value="بله">بله</option>
+                                    <option value="خیر">خیر</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="insuranceName" class="form-label">نام بیمه‌گر</label>
+                                <input type="text" class="form-control" id="insuranceName">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="spouseSection" style="display:none;">
+                        <h3 class="mt-4">وضعیت اقامت همسر</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="spouseVisaType" class="form-label">نوع ویزای همسر</label>
+                                    <select class="form-select" id="spouseVisaType">
+                                        <option disabled selected>انتخاب کنید</option>
+                                        <option value="ملحق">ملحق</option>
+                                        <option value="توریست">توریست</option>
+                                        <option value="دانشجویی">دانشجویی</option>
+                                        <option value="اقامت">اقامت</option>
+                                        <option value="بدون ویزا">بدون ویزا</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="spouseVisaExpiry" class="form-label">تاریخ انقضای ویزای همسر</label>
+                                    <input type="date" class="form-control" id="spouseVisaExpiry">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="btn-nav mt-4">
+                        <button type="button" class="btn btn-secondary prev-tab">
+                            <i class="fas fa-arrow-right"></i> قبلی
+                        </button>
+                        <button type="button" class="btn btn-warning next-tab">
+                            بعدی <i class="fas fa-arrow-left"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" data-tab="4">
+                <form id="form-tab4">
+                    <h2>بارگذاری مدارک</h2>
+                    <p class="text-muted">لطفا مدارک موردنیاز را در فرمت jpg یا pdf بارگذاری نمایید. حداکثر حجم هر فایل:
+                        ۵ مگابایت</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">تصویر صفحه اول گذرنامه</label>
+                                <div class="file-upload-area" data-field="passportPage">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg,.png" multiple>
+                                </div>
+                                <div class="uploaded-files" id="passportPage-files"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">تصویر کارت طلبه</label>
+                                <div class="file-upload-area" data-field="studentCard">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg" multiple>
+                                </div>
+                                <div class="uploaded-files" id="studentCard-files"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">تصویر پرسنلی</label>
+                                <div class="file-upload-area" data-field="personalPhoto">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".jpg,.jpeg">
+                                </div>
+                                <div class="uploaded-files" id="personalPhoto-files"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">تصویر اقامت یا ویزای فعلی</label>
+                                <div class="file-upload-area" data-field="visaPage">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg" multiple>
+                                </div>
+                                <div class="uploaded-files" id="visaPage"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">مدارک تحصیلی</label>
+                                <div class="file-upload-area" data-field="educationDocs">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg" multiple>
+                                </div>
+                                <div class="uploaded-files" id="educationDocs-files"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">ریزنمرات مقطع تحصیل قبلی</label>
+                                <div class="file-upload-area" data-field="educationDetails">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg" multiple>
+                                </div>
+                                <div class="uploaded-files" id="educationDetails-files"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <label class="form-label">سایر مدارک (اختیاری)</label>
+                                <div class="file-upload-area" data-field="otherDocs">
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-muted"></i>
+                                    <p>فایل را اینجا بکشید یا کلیک کنید</p>
+                                    <input type="file" class="d-none" accept=".pdf,.jpg,.jpeg" multiple>
+                                </div>
+                                <div class="uploaded-files" id="otherDocs-files"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-nav mt-4">
+                            <button type="submit" class="btn btn-success">
+                                ثبت و ارسال
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const mobileInput = document.getElementById('mobileNumber');
+
+        mobileInput.addEventListener('input', () => {
+            if (!mobileInput.validity.valid) {
+                mobileInput.setCustomValidity("شماره موبایل معتبر نیست؛ باید با 09 شروع شود و 11 رقم باشد.");
+            } else {
+                mobileInput.setCustomValidity("");
+            }
+        });
+        //for marries status
+        document.getElementById("maritalStatus").addEventListener("change", function () {
+            const spouseFields = document.getElementById("spouseFields");
+            const spouseName = document.getElementById("spouseName");
+            const children = document.getElementById("children");
+
+            if (this.value === "married") {
+                spouseFields.style.display = "block";
+                // Make spouse fields required when married
+                spouseName.setAttribute("required", "true");
+            } else {
+                spouseFields.style.display = "none";
+                // Remove required attribute and clear values when single
+                spouseName.removeAttribute("required");
+                spouseName.value = "";
+                children.value = "0";
+            }
+        });
+        // Show/hide foreign degree fields based on study country
+        // داخل همین بخش
+        document.getElementById("maritalStatus").addEventListener("change", function () {
+            const spouseFields = document.getElementById("spouseFields");
+            const children = document.getElementById("children");
+
+            if (this.value === "married") {
+                spouseFields.style.display = "block";
+                children.setAttribute("required", "true");   // ← اضافه
+            } else {
+                spouseFields.style.display = "none";
+                children.removeAttribute("required");
+                children.value = "";
+            }
+        });
+        //for loging out
+        function logoutUser() {
+            // پاک کردن اطلاعات ذخیره شده سمت کاربر (اختیاری ولی مفید)
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // هدایت به صفحه لاگین
+            window.location.href = "index.html"; // آدرس صفحه لاگینت
+        }
+        <!-- KEEP THIS ONE -->
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".tab");
+            const panes = document.querySelectorAll(".tab-pane");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const targetTab = parseInt(tab.dataset.tab);
+                    switchTab(targetTab);
+                });
+            });
+
+            // Next buttons
+            document.querySelectorAll(".next-tab").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const currentPane = btn.closest(".tab-pane");
+                    const currentTab = parseInt(currentPane.dataset.tab);
+                    const form = currentPane.querySelector("form");
+
+                    if (!form || form.checkValidity()) {
+                        const nextTab = currentTab + 1;
+                        if (nextTab <= 4) switchTab(nextTab);
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+            });
+
+            // Previous buttons
+            document.querySelectorAll(".prev-tab").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const currentTab = parseInt(btn.closest(".tab-pane").dataset.tab);
+                    const prevTab = currentTab - 1;
+                    if (prevTab >= 1) switchTab(prevTab);
+                });
+            });
+
+            function switchTab(tabNumber) {
+                tabs.forEach(t => t.classList.remove("active"));
+                panes.forEach(p => p.classList.remove("active"));
+
+                const targetTab = document.querySelector(`.tab[data-tab="${tabNumber}"]`);
+                const targetPane = document.querySelector(`.tab-pane[data-tab="${tabNumber}"]`);
+
+                targetTab?.classList.add("active");
+                targetPane?.classList.add("active");
+            }
+
+            // Show first tab on load
+            switchTab(1);
+        });
+    </script>
+    <script>
+        /* ---------- کنترل نمایش بخش همسر ---------- */
+        function toggleSpouseSection() {
+            const marital = document.getElementById('maritalStatus');
+            const spouseSection = document.getElementById('spouseSection');
+            if (!marital || !spouseSection) return;
+
+            spouseSection.style.display =
+                marital.value === 'married' ? 'block' : 'none';
+        }
+
+        /* اجرا در لود و هر بار تغییر وضعیت تأهل */
+        document.addEventListener('DOMContentLoaded', toggleSpouseSection);
+        document.getElementById('maritalStatus')?.addEventListener('change', toggleSpouseSection);
+    </script>
+    <script>
+
+        // File upload functionality
+        const uploadAreas = document.querySelectorAll('.file-upload-area');
+
+        uploadAreas.forEach(area => {
+            const input = area.querySelector('input[type="file"]');
+            const field = area.dataset.field;
+            const filesContainer = document.getElementById(field + '-files');
+
+            // Click to upload
+            area.addEventListener('click', () => {
+                input.click();
+            });
+
+            // Drag and drop
+            area.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                area.classList.add('dragover');
+            });
+
+            area.addEventListener('dragleave', () => {
+                area.classList.remove('dragover');
+            });
+
+            area.addEventListener('drop', (e) => {
+                e.preventDefault();
+                area.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                handleFiles(files, field, filesContainer);
+            });
+
+            // File input change
+            input.addEventListener('change', (e) => {
+                const files = e.target.files;
+                handleFiles(files, field, filesContainer);
+            });
+        });
+        function handleFiles(files, field, container) {
+            Array.from(files).forEach(file => {
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('حجم فایل نباید بیشتر از 5 مگابایت باشد');
+                    return;
+                }
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                        <span><i class="fas fa-file"></i> ${file.name}</span>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                container.appendChild(fileItem);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('form-tab4').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                if (confirm('آیا از صحت اطلاعات وارد شده اطمینان دارید؟')) {
+                    const firstName = document.getElementById('firstName').value.trim();
+                    const lastName = document.getElementById('lastName').value.trim();
+                    const name = firstName + ' ' + lastName;
+
+                    const code = document.getElementById('studentNumber').value.trim();
+                    const degree = document.getElementById('desiredCourse').value;
+                    const date = document.getElementById('admitDate').value;
+                    const status = "active";
+
+                    if (!firstName || !lastName || !code || !degree || !date) {
+                        alert('لطفاً همه فیلدهای ضروری را پر کنید.');
+                        return;
+                    }
+
+                    const newStudent = { name, code, degree, date, status };
+
+                    const tempStudents = JSON.parse(localStorage.getItem('tempStudents')) || [];
+
+                    tempStudents.push(newStudent);
+
+                    localStorage.setItem('tempStudents', JSON.stringify(tempStudents));
+
+                    window.location.href = "stmanage_page.html";
+                }
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>

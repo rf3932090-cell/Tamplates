@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>جزئیات طلبه</title>
+    <!-- Bootstrap RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <!-- فونت فارسی Vazirmatn -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            padding: 0px;
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            width: 100%;
+            font-family: 'Vazirmatn', sans-serif;
+            font-weight: 500;
+
+        }
+
+        .tabs {
+            margin-top: 30px;
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+            flex-wrap: nowrap;
+        }
+
+        .tab-list {
+            display: flex;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            background: #eee;
+            margin-left: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: #98e0cf;
+            transition: all 0.25s ease;
+
+        }
+
+        .tab.active {
+            background: #ffc107;
+            font-weight: bold;
+            border-color: #000;
+            color: #000;
+        }
+
+        .topbar-btn {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .btn-topbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            /* فاصله آیکون و متن */
+            padding: 6px 18px;
+            border-radius: 30px;
+            /* حالت Pill */
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            user-select: none;
+        }
+
+        /* حساب کاربری –‌ روشنِ شیشه‌ای */
+        .btn-user {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-user:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* خروج –‌ گرادیان زرد */
+        .btn-logout {
+            background: linear-gradient(135deg, #ffce00 0%, #ffb300 100%);
+            color: #111;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, #ffd740 0%, #ffa000 100%);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* حالت فشرده هنگام کلیک */
+        .btn-topbar:active {
+            transform: scale(0.96);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid mt-5">
+        <div class="tabs">
+            <div class="tab-list d-flex">
+                <div class="tab active" data-tab="1">اطلاعات هویتی فرد و خانواده</div>
+                <div class="tab" data-tab="2">اطلاعات پذیرش</div>
+                <div class="tab" data-tab="3">اطلاعات تحصیلی</div>
+                <div class="tab" data-tab="4">اطلاعات آموزشی</div>
+                <div class="tab" data-tab="5">اطلاعات اداری و رفاهی</div>
+                <div class="tab" data-tab="6">پرونده خوابگاه</div>
+            </div>
+            <div class="topbar-btns d-flex gap-2">
+                <button class="btn-topbar btn-user">
+                    <i class="fas fa-user"></i>
+                    <span>حساب کاربری</span>
+                </button>
+
+                <button class="btn-topbar btn-logout" onclick="logoutUser()">
+                    <span>خروج</span> <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" data-tab="1">
+                
+            </div>
+            <div class="tab-pane" data-tab="2"></div>
+            <div class="tab-pane" data-tab="3"></div>
+            <div class="tab-pane" data-tab="4"></div>
+            <div class="tab-pane" data-tab="5"></div>
+            <div class="tab-pane" data-tab="6"></div>
+
+
+        </div>
+    </div>
+
+
+
+    <script>
+        function logoutUser() {
+            // پاک کردن اطلاعات ذخیره شده سمت کاربر (اختیاری ولی مفید)
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // هدایت به صفحه لاگین
+            window.location.href = "index.html"; // آدرس صفحه لاگینت
+        }
+        <!-- KEEP THIS ONE -->
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll(".tab");
+            const panes = document.querySelectorAll(".tab-pane");
+
+            tabs.forEach(tab => {
+                tab.addEventListener("click", () => {
+                    const targetTab = parseInt(tab.dataset.tab);
+                    switchTab(targetTab);
+                });
+            });
+   // Next buttons
+            document.querySelectorAll(".next-tab").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const currentPane = btn.closest(".tab-pane");
+                    const currentTab = parseInt(currentPane.dataset.tab);
+                    const form = currentPane.querySelector("form");
+
+                    if (!form || form.checkValidity()) {
+                        const nextTab = currentTab + 1;
+                        if (nextTab <= 4) switchTab(nextTab);
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+            });
+
+            // Previous buttons
+            document.querySelectorAll(".prev-tab").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const currentTab = parseInt(btn.closest(".tab-pane").dataset.tab);
+                    const prevTab = currentTab - 1;
+                    if (prevTab >= 1) switchTab(prevTab);
+                });
+            });
+
+            function switchTab(tabNumber) {
+                tabs.forEach(t => t.classList.remove("active"));
+                panes.forEach(p => p.classList.remove("active"));
+
+                const targetTab = document.querySelector(`.tab[data-tab="${tabNumber}"]`);
+                const targetPane = document.querySelector(`.tab-pane[data-tab="${tabNumber}"]`);
+
+                targetTab?.classList.add("active");
+                targetPane?.classList.add("active");
+            }
+
+            // Show first tab on load
+            switchTab(1);
+        });    </script>
+</body>
+
+</html>
