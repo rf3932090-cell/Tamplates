@@ -493,6 +493,23 @@
             }
         }
 
+        @media (max-width: 670px) {
+
+            .btn-topbar {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+            }
+
+            .topbar-btns {
+                gap: 8px;
+            }
+             .filter-btn {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+        }
+
         @media (max-width: 580px) {
             .filter-bar {
                 display: flex;
@@ -506,13 +523,27 @@
                 width: 100%;
             }
 
-            .filter-btn {
-                width: 100%;
-                justify-content: space-between;
-            }
-
+            
             .search-select input {
                 width: 100%;
+            }
+        }
+         @media (max-width: 506px) {
+
+
+            .topbar-btns {
+                gap: 6px;
+            }
+
+            .btn-topbar {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            /* برای اینکه دکمه‌ها خیلی بزرگ نباشن */
+            .btn-topbar span {
+                display: none;
+                /* فقط آیکون‌ها بمونن */
             }
         }
 
@@ -571,38 +602,6 @@
                 right: 0;
             }
         }
-
-        @media (max-width: 650px) {
-
-            .btn-topbar {
-                padding: 6px 14px;
-                font-size: 0.85rem;
-            }
-
-            .topbar-btns {
-                gap: 8px;
-            }
-        }
-
-        @media (max-width: 506px) {
-
-
-            .topbar-btns {
-                gap: 6px;
-            }
-
-            .btn-topbar {
-                padding: 5px 10px;
-                font-size: 0.8rem;
-            }
-
-            /* برای اینکه دکمه‌ها خیلی بزرگ نباشن */
-            .btn-topbar span {
-                display: none;
-                /* فقط آیکون‌ها بمونن */
-            }
-        }
-
         @media (max-width: 400px) {
             .btn-topbar span {
                 display: none;
@@ -949,7 +948,7 @@
 
                     // 3. ذخیره لیست جدید
                     localStorage.setItem("students", JSON.stringify(students));
-                    
+
                     // 4. حذف سطر از جدول
                     const row = btn.closest("tr");
                     row.remove();

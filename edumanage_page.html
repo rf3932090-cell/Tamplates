@@ -12,7 +12,7 @@
     <!-- فونت فارسی Vazirmatn -->
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet" />
     <style>
-          * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -230,7 +230,8 @@
             transform: scale(0.96);
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
-         .filter-bar {
+
+        .filter-bar {
             display: flex;
             gap: 20px;
             align-items: center;
@@ -326,8 +327,235 @@
             color: #fff;
             border-radius: 10px;
         }
-       
 
+        .subjectList {
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            padding-top: 0;
+
+        }
+
+        .subjectList .list {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 150px;
+            top: 20px;
+            color: #fff;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .cardHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .cardHeader h2 {
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .list table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .list table thead th {
+            border-bottom: 1px solid rgba(202, 196, 196, 0.1);
+            font-weight: 600;
+            color: #ffc107;
+        }
+
+        .list table tr {
+            border-radius: 15px;
+        }
+
+        .list table tbody tr {
+            border-bottom: 1px solid rgba(202, 196, 196, 0.1);
+        }
+
+        .list table tr:last-child {
+            border-bottom: none;
+        }
+
+
+        @media(max-width:992px) {
+            .navigation {
+                right: -300px;
+            }
+
+            .navigation.active {
+                right: 0;
+                width: 300px;
+
+
+            }
+
+            .main {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .main.active {
+                width: calc(100% - 300px);
+                margin-right: 300px;
+
+            }
+
+            .studentList {
+                overflow-x: auto;
+            }
+        }
+
+
+
+        @media (max-width:758px) {
+            .cardHeader h2 {
+                font-weight: 600;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 670px) {
+
+            .btn-topbar {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+            }
+
+            .topbar-btns {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+        }
+
+        /*mobile size*/
+        @media (max-width: 580px) {
+            .filter-bar {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+
+            .filter-select,
+            .search-select {
+                width: 100%;
+            }
+
+
+            .search-select input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 506px) {
+
+
+            .topbar-btns {
+                gap: 6px;
+            }
+
+            .btn-topbar {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+
+            /* برای اینکه دکمه‌ها خیلی بزرگ نباشن */
+            .btn-topbar span {
+                display: none;
+                /* فقط آیکون‌ها بمونن */
+            }
+        }
+
+        @media (max-width:480px) {
+            body {
+                direction: rtl;
+            }
+
+            .studentList .list {
+                overflow: auto;
+            }
+
+            .studentList .list table {
+                width: 600px;
+
+            }
+
+            .navigation {
+                width: 100%;
+                right: -100%;
+                z-index: 1000;
+            }
+
+            .navigation.active {
+                width: 100%;
+                right: 0;
+            }
+
+            /* Fixed toggle positioning for mobile */
+            .toggle {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+                transition: none !important;
+            }
+
+            .toggle.active {
+                position: relative !important;
+                z-index: 1200 !important;
+                right: auto !important;
+                left: auto !important;
+            }
+
+            .toggle.active::before {
+                color: #111 !important;
+            }
+
+            .toggle.active::before {
+                color: #fff;
+            }
+
+            .main,
+            .main.active {
+                width: 100%;
+                right: 0;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn-topbar span {
+                display: none;
+                /* Hide text, show only icons */
+            }
+
+            .btn-topbar {
+                padding: 8px;
+                min-width: 40px;
+                justify-content: center;
+            }
+
+            .topbar-btns {
+                gap: 5px;
+            }
+        }
     </style>
 </head>
 
@@ -417,7 +645,6 @@
                         <span class="arrow"></span>
                     </button>
                     <ul id="degreeOptions" class="dropdown-menu">
-                        <li data-value="all">همه مقاطع</li>
                         <li data-value="bachelor">کارشناسی</li>
                         <li data-value="master">کارشناسی ارشد</li>
                         <li data-value="phd">دکتری</li>
@@ -430,10 +657,15 @@
                         <span class="arrow"></span>
                     </button>
                     <ul id="yearOptions" class="dropdown-menu">
+                        <li data-value="04">۱۴۰۴-۱۴۰۵</li>
                         <li data-value="03">۱۴۰۳-۱۴۰۴</li>
                         <li data-value="02">۱۴۰۲-۱۴۰۳</li>
                         <li data-value="01">۱۴۰۱-۱۴۰۲</li>
                         <li data-value="00">۱۴۰۰-۱۴۰۱</li>
+                        <li data-value="99">۱۳۹۹-۱۴۰۰</li>
+                        <li data-value="98">۱۳۹۸-۱۳۹۹</li>
+                        <li data-value="97">۱۳۹۷-۱۳۹۸</li>
+                        <li data-value="96">۱۳۹۶-۱۳۹۷</li>
                     </ul>
                 </div>
                 <div class="filter-select">
@@ -442,12 +674,68 @@
                         <span class="arrow"></span>
                     </button>
                     <ul id="termOptions" class="dropdown-menu">
-                        <li data-value="autumn">پاییز</li>
-                        <li data-value="spring">بهار</li>
-                        <li data-value="summer">تابستان</li>
+                        <li data-value="autumn">نیمسال اول</li>
+                        <li data-value="spring">نیمسال دوم</li>
+                        <li data-value="summer">ترم تابستان</li>
+                    </ul>
+                </div>
+                <div class="filter-select">
+                    <button id="entryBtn" class="filter-btn">
+                        انتخاب ورودی
+                        <span class="arrow"></span>
+                    </button>
+                    <ul id="entryOptions" class="dropdown-menu">
+                        <li data-value="0401">1404-01</li>
+                        <li data-value="0302">1403-02</li>
+                        <li data-value="0301">1403-01</li>
+                        <li data-value="0202">1402-02</li>
+                        <li data-value="0201">1402-01</li>
+                        <li data-value="0102">1401-02</li>
+                        <li data-value="0101">1401-01</li>
+                        <li data-value="0002">1400-02</li>
+                        <li data-value="0001">1400-01</li>
+                        <li data-value="9902">1399-02</li>
+                        <li data-value="9901">1399-01</li>
+                        <li data-value="9802">1398-02</li>
+                        <li data-value="9801">1398-01</li>
+                        <li data-value="9702">1397-02</li>
+                        <li data-value="9701">1397-01</li>
+                        <li data-value="9602">1396-02</li>
+                        <li data-value="9601">1396-01</li>
+
+
                     </ul>
                 </div>
             </div>
+            <div class="subjectList justify-content-between mb-3">
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>لیست دروس ارائه شده</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>کد درس</th>
+                                <th>نام درس</th>
+                                <th>نام استاد</th>
+                                <th>برنامه کلاسی</th>
+                                <th>تعداد شرکت‌کنندگان</th>
+                                <th>سال تحصیل</th>
+                                <th>ترم تحصیلی</th>
+                                <th>ورودی</th>
+                                <th>عملیات</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="subjectsTableBody">
+
+                        </tbody>
+                    </table>
+                    <button class="btn btn-success" onclick="addSubject()"> + ثبت درس جدید</button>
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
@@ -481,6 +769,7 @@
                         selectedDegree = buttonId === 'degreeBtn' ? item.dataset.value : selectedDegree;
                         selectedYear = buttonId === 'yearBtn' ? item.dataset.value : selectedYear;
                         selectedTerm = buttonId === 'termBtn' ? item.dataset.value : selectedTerm;
+                        selectedEntry = buttonId === 'entryBtn' ? item.dataset.value : selectedEntry;
                         filterTable();
                     });
                 });
@@ -489,6 +778,7 @@
             setupDropdown('degreeBtn', 'degreeOptions');
             setupDropdown('yearBtn', 'yearOptions');
             setupDropdown('termBtn', 'termOptions');
+            setupDropdown('entryBtn', 'entryOptions');
 
             document.addEventListener('click', () => {
                 document.querySelectorAll('.dropdown-menu').forEach(menu => {
@@ -496,10 +786,11 @@
                 });
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             });
-              // فیلتر ترکیبی
+            // فیلتر ترکیبی
             let selectedDegree = 'all';
             let selectedYear = 'all';
             let selectedTerm = 'all'
+            let selectedEntry = 'all'
             const searchInput = document.getElementById('searchInput');
 
             searchInput.addEventListener('input', filterTable);
@@ -507,19 +798,21 @@
             function filterTable() {
                 const searchVal = searchInput.value.trim().toLowerCase();
 
-                document.querySelectorAll('#studentsTableBody tr').forEach(row => {
+                document.querySelectorAll('#subjectsTableBody tr').forEach(row => {
                     const name = row.children[1].textContent.toLowerCase();
                     const code = row.children[2].textContent.toLowerCase();
                     const degree = row.children[3].dataset.degree;
                     const year = row.children[4].dataset.year;
                     const term = row.children[5].dataset.term;
+                    const entry = row.children[6].dataset.entry;
 
                     const matchesDegree = selectedDegree === 'all' || degree === selectedDegree;
                     const matchesYear = selectedYear === 'all' || year === selectedYear;
                     const matchesTerm = selectedTerm === 'all' || term === selectedTerm;
+                    const mathesEntry = selectedEntry === 'all' || entry === selectedEntry;
                     const matchesSearch = name.includes(searchVal) || code.includes(searchVal);
 
-                    if (matchesDegree && matchesYear && matchesTerm && matchesSearch) {
+                    if (matchesDegree && matchesYear && matchesTerm && mathesEntry && matchesSearch) {
                         row.style.display = '';
                     } else {
                         row.style.display = 'none';
@@ -529,12 +822,64 @@
         });
     </script>
     <script>
-         document.querySelector(".toggle").addEventListener("click", function () {
+        document.querySelector(".toggle").addEventListener("click", function () {
             document.querySelector(".toggle").classList.toggle("active");
             document.querySelector(".navigation").classList.toggle("active");
             document.querySelector(".main").classList.toggle("active");
         });
 
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const tbody = document.querySelector(' tbody');
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach((row, index) => {
+                // اول یه سلول شماره ردیف می‌سازیم
+                const cell = document.createElement('td');
+                cell.textContent = index + 1;
+
+                // سلول رو به ابتدای ردیف اضافه می‌کنیم
+                row.insertBefore(cell, row.firstChild);
+            });
+        });
+    </script>
+    <script>
+        function addSubject() {
+            // هدایت به صفحه ثبت درس حدید
+            window.location.href = "addNewSubject.html";
+        }
+    </script>
+    <script>
+        /* ---------- خواندن دروس موقت و رندر در جدول ---------- */
+        function loadTempSubjects() {
+            const students = JSON.parse(localStorage.getItem('tempSubjects')) || [];
+            const tbody = document.getElementById('subjectsTableBody');
+
+            students.forEach(sub => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td>${sub.code}</td>
+            <td>${sub.name}</td>
+            <td>${sub.teachName}</td>
+            <td>${sub.classTime}</td>
+            <td data-status="${stu.status}">در حال تحصیل</td>
+            <td>${sub.year}</td>
+            <td>${sub.term}</td>
+            <td>${sub.entry}</td>
+            <td>
+                <div class="dropdown">
+    <button class="action-btn">⋮</button>
+    <ul class="dropdown-menu">
+      <li><button class="edit-btn">✏️ ویرایش</button></li>
+      <li><button class="delete-btn">❌ حذف</button></li>
+    </ul>
+  </div>
+            </td>
+        `;
+                tbody.appendChild(tr);
+            });
+        };
     </script>
 </body>
 
