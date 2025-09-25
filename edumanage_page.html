@@ -327,7 +327,14 @@
             color: #fff;
             border-radius: 10px;
         }
+        .examList{
+            background: linear-gradient(to left, #1d3f37, #52b19b);
+            position: relative;
+            width: 100%;
+            padding: 20px;
+            padding-top: 0;
 
+        }
         .subjectList {
             background: linear-gradient(to left, #1d3f37, #52b19b);
             position: relative;
@@ -335,6 +342,17 @@
             padding: 20px;
             padding-top: 0;
 
+        }
+
+        .examList .list {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            min-height: 150px;
+            top: 20px;
+            color: #fff;
+            padding: 20px;
+            overflow-x: auto;
         }
 
         .subjectList .list {
@@ -389,6 +407,9 @@
             border-bottom: none;
         }
 
+        .modal {
+            z-index: 2000;
+        }
 
         @media(max-width:992px) {
             .navigation {
@@ -719,25 +740,469 @@
                                 <th>کد درس</th>
                                 <th>نام درس</th>
                                 <th>نام استاد</th>
+                                <th>تعداد واحد</th>
                                 <th>برنامه کلاسی</th>
                                 <th>تعداد شرکت‌کنندگان</th>
                                 <th>سال تحصیل</th>
                                 <th>ترم تحصیلی</th>
                                 <th>ورودی</th>
                                 <th>عملیات</th>
-
                             </tr>
                         </thead>
                         <tbody id="subjectsTableBody">
 
                         </tbody>
                     </table>
-                    <button class="btn btn-success" onclick="addSubject()"> + ثبت درس جدید</button>
+                    <!-- دکمه باز کردن مودال -->
+
+                <button class="btn btn-success me-5 float-end" data-bs-toggle="modal"
+                    data-bs-target="#newSubjectsModal">
+                    + ثبت درس جدید
+                </button>
                 </div>
+                
             </div>
 
+
+            <!-- Modal -->
+            <div class="modal fade" id="newSubjectsModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <!-- Header -->
+                        <div class="modal-header bg-success text-white"> #تغییر رنگ برای هدر مودال
+                            <h5 class="modal-title">ثبت چند درس جدید</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <!-- Body -->
+                        <div class="modal-body">
+                            <!-- فرم ورود اطلاعات یک درس -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-md-3">
+                                            <input type="text" id="subName" class="form-control" placeholder="نام درس">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="text" inputmode="numeric" id="subCode" class="form-control"
+                                                placeholder="کد درس">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" id="subTeacher" class="form-control"
+                                                placeholder="نام استاد">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" id="subUnits" class="form-control"
+                                                placeholder="تعداد واحد">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" id="subParticipants" class="form-control"
+                                                placeholder="تعداد شرکت‌کنندگان">
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-md-4">
+                                            <h4>برنامه کلاسی</h4>
+                                            <table class="table table-bordered table-sm mb-0 text-center">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>روز</th>
+                                                        <th>ساعت</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td><input type="checkbox" id="day-sat"> شنبه</td>
+                                                        <td>
+                                                            <div class="time-options">
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="8-10" disabled> ۸-۱۰ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="10-12" disabled> ۱۰-۱۲ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="1-3" disabled> ۱-۳ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="3-5" disabled> ۳-۵ </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" id="day-sat"> یکشنبه</td>
+                                                        <td>
+                                                            <div class="time-options">
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="8-10" disabled> ۸-۱۰ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="10-12" disabled> ۱۰-۱۲ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="1-3" disabled> ۱-۳ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="3-5" disabled> ۳-۵ </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" id="day-sat"> دوشنبه</td>
+                                                        <td>
+                                                            <div class="time-options">
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="8-10" disabled> ۸-۱۰ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="10-12" disabled> ۱۰-۱۲ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="1-3" disabled> ۱-۳ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="3-5" disabled> ۳-۵ </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" id="day-sat"> سه‌شنبه</td>
+                                                        <td>
+                                                            <div class="time-options">
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="8-10" disabled> ۸-۱۰ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="10-12" disabled> ۱۰-۱۲ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="1-3" disabled> ۱-۳ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="3-5" disabled> ۳-۵ </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><input type="checkbox" id="day-sat"> چهارشنبه</td>
+                                                        <td>
+                                                            <div class="time-options">
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="8-10" disabled> ۸-۱۰ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="10-12" disabled> ۱۰-۱۲ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="1-3" disabled> ۱-۳ </label>
+                                                                <label><input type="checkbox" class="sat-time"
+                                                                        value="3-5" disabled> ۳-۵ </label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select id="subYear" class="form-select">
+                                                <option value="04">۱۴۰۴-۱۴۰۵</option>
+                                                <option value="03">۱۴۰۳-۱۴۰۴</option>
+                                                <option value="02">۱۴۰۲-۱۴۰۳</option>
+                                                <option value="01">۱۴۰۱-۱۴۰۲</option>
+                                                <option value="00">۱۴۰۰-۱۴۰۱</option>
+                                                <option value="99">۱۳۹۹-۱۴۰۰</option>
+                                                <option value="98">۱۳۹۸-۱۳۹۹</option>
+                                                <option value="97">۱۳۹۷-۱۳۹۸</option>
+                                                <option value="96">۱۳۹۶-۱۳۹۷</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select id="subTerm" class="form-select">
+                                                <option value="نیمسال اول">نیمسال اول</option>
+                                                <option value="نیمسال دوم">نیمسال دوم</option>
+                                                <option value="تابستان">تابستان</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <select id="subEntry" class="form-select">
+                                                <option value="0401">1404-01</option>
+                                                <option value="0302">1403-02</option>
+                                                <option value="0301">1403-01</option>
+                                                <option value="0202">1402-02</option>
+                                                <option value="0201">1402-01</option>
+                                                <option value="0102">1401-02</option>
+                                                <option value="0101">1401-01</option>
+                                                <option value="0002">1400-02</option>
+                                                <option value="0001">1400-01</option>
+                                                <option value="9902">1399-02</option>
+                                                <option value="9901">1399-01</option>
+                                                <option value="9802">1398-02</option>
+                                                <option value="9801">1398-01</option>
+                                                <option value="9702">1397-02</option>
+                                                <option value="9701">1397-01</option>
+                                                <option value="9602">1396-02</option>
+                                                <option value="9601">1396-01</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="text-end mt-3">
+                                        <button id="addTempBtn" class="btn btn-outline-success">
+                                            ➕ افزودن به لیست موقت
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- جدول لیست موقت -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered text-center align-middle" id="tempTable">
+                                    <thead class="table-light">
+                                        <tr>
+
+                                            <th>ردیف</th>
+                                            <th>نام درس</th>
+                                            <th>کد</th>
+                                            <th>استاد</th>
+                                            <th>واحد</th>
+                                            <th class="d-none d-lg-table-cell">تعداد شرکت‌کنندگان</th>
+                                            <th>برنامه کلاسی</th>
+                                            <th>سال تحصیلی</th>
+                                            <th>ترم</th>
+                                            <th class="d-none d-lg-table-cell">ورودی</th>
+                                            <th>عملیات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- ردیف‌های موقت اینجا میاد -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                            <button id="saveAllBtn" class="btn btn-success">ثبت نهایی</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="examList justify-content-between mb-3">
+                <div class="list">
+                    <div class="cardHeader">
+                        <h2>لیست امتحانات دروس ارائه شده</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ردیف</th>
+                                <th>کد درس</th>
+                                <th>نام درس</th>
+                                <th>نام استاد</th>
+                                <th>تعداد واحد</th>
+                                <th>برنامه امتحان</th>
+                                <th>تعداد شرکت‌کنندگان</th>
+                                <th>سال تحصیل</th>
+                                <th>ترم تحصیلی</th>
+                                <th>ورودی</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="examsTableBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelectorAll("tbody input[type='checkbox'][id^='day-']").forEach(dayCheckbox => {
+            dayCheckbox.addEventListener("change", (e) => {
+                const row = e.target.closest("tr");
+                const timeOptions = row.querySelectorAll(".time-options input[type='checkbox']");
+                timeOptions.forEach(opt => opt.disabled = !e.target.checked);
+                if (!e.target.checked) {
+                    timeOptions.forEach(opt => opt.checked = false);
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        function getSchedule() {
+            const schedule = [];
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const dayText = row.querySelector("td").innerText.replace(/^\s*✅?\s*/, "").trim();
+                const timeOptions = row.querySelectorAll(".time-options input:checked");
+                timeOptions.forEach(opt => {
+                    schedule.push(`${dayText} ${opt.value}`);
+                });
+            });
+            return schedule;
+        }
+        const tempLessons = [];
+        const tbody = document.querySelector("#tempTable tbody");
+
+
+        document.getElementById("addTempBtn").addEventListener("click", () => {
+            const name = document.getElementById("subName").value.trim();
+            const code = document.getElementById("subCode").value.trim();
+            const teacher = document.getElementById("subTeacher").value.trim();
+            const units = document.getElementById("subUnits").value.trim();
+
+            const participants = document.getElementById("subParticipants").value.trim();
+
+            const year = document.getElementById("subYear").value;
+            const term = document.getElementById("subTerm").value;
+            const entry = document.getElementById("subEntry").value;
+
+
+            if (!name || !code || !teacher || !units) {
+                alert("لطفا همه فیلدها را پر کنید!");
+                return;
+            }
+            const schedule = getSchedule();
+
+            const lesson = { name, code, teacher, units, participants, year, term, entry, schedule };
+            tempLessons.push(lesson);
+
+            renderTempTable();
+            document.getElementById("subName").value = "";
+            document.getElementById("subCode").value = "";
+            document.getElementById("subTeacher").value = "";
+            document.getElementById("subUnits").value = "";
+            document.getElementById("subParticipants").value = "";
+            document.getElementById("subYear").value = "";
+            document.getElementById("subTerm").value = "";
+            document.getElementById("subEntry").value = "";
+
+        });
+        // ریست کردن برنامه کلاسی
+        document.querySelectorAll("tbody input[type='checkbox'][id^='day-']").forEach(dayCheckbox => {
+            dayCheckbox.checked = false;
+            const row = dayCheckbox.closest("tr");
+            const timeOptions = row.querySelectorAll(".time-options input[type='checkbox']");
+            timeOptions.forEach(opt => {
+                opt.checked = false;
+                opt.disabled = true; // دوباره غیرفعال بشن
+            });
+        });
+
+
+        function renderTempTable() {
+            tbody.innerHTML = "";
+            tempLessons.forEach((lesson, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${lesson.name}</td>
+        <td>${lesson.code}</td>
+        <td>${lesson.teacher}</td>
+        <td>${lesson.units}</td>
+        <td class="d-none d-lg-table-cell">${lesson.participants}</td>
+        <td>${lesson.schedule.join("<br>")}</td> 
+          <td>${lesson.year}</td>
+        <td>${lesson.term}</td>
+        <td class="d-none d-lg-table-cell">${lesson.entry}</td>
+        <td>
+          <button class="btn btn-sm btn-danger" onclick="deleteTemp(${index})">❌ حذف</button>
+        </td>
+      `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteTemp(index) {
+            tempLessons.splice(index, 1);
+            renderTempTable();
+        }
+
+        document.getElementById("saveAllBtn").addEventListener("click", () => {
+            console.log("ثبت نهایی:", tempLessons);
+            alert("همه درس‌ها ثبت شدند ✅");
+            // اینجا می‌تونی tempLessons رو ذخیره کنی تو localStorage یا بفرستی سمت سرور
+        });
+        document.getElementById("saveAllBtn").addEventListener("click", () => {
+            if (tempLessons.length === 0) {
+                alert("هیچ درسی برای ذخیره وجود ندارد!");
+                return;
+            }
+            let savedLessons = JSON.parse(localStorage.getItem("lessons")) || [];
+            savedLessons = savedLessons.concat(tempLessons);
+            // ذخیره در localStorage
+            localStorage.setItem("lessons", JSON.stringify(savedLessons));
+
+            // بستن مودال
+            const modalEl = document.getElementById('newSubjectsModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            // رندر جدول اصلی
+            renderMainTable();
+
+            // پاک کردن جدول موقت
+            tempLessons.length = 0;
+            renderTempTable();
+
+            alert("همه درس‌ها ثبت شدند ✅");
+        });
+
+        // تابع رندر جدول اصلی subjectList
+        function renderMainTable() {
+            const savedLessons = JSON.parse(localStorage.getItem("lessons")) || [];
+            const tbody = document.getElementById("subjectsTableBody");
+            tbody.innerHTML = "";
+
+            savedLessons.forEach((lesson, index) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+            
+            <td>${lesson.code}</td>
+            <td>${lesson.name}</td>
+            <td>${lesson.teacher}</td>
+            <td>${lesson.units}</td>
+            <td>${lesson.schedule.join("<br>")}</td>
+            <td>${lesson.participants}</td>
+            <td>${lesson.year}</td>
+            <td>${lesson.term}</td>
+            <td>${lesson.entry}</td>
+            <td>
+               
+                <button class="btn btn-sm btn-danger delete-btn" title="حذف"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        document.addEventListener("click", function (e) {
+            if (e.target.closest(".delete-btn")) {
+                const btn = e.target.closest(".delete-btn");
+                const code = btn.dataset.code;
+
+                if (confirm("آیا از حذف این درس مطمئن هستید؟")) {
+                    // 1. گرفتن لیست از localStorage
+                    let lessons = JSON.parse(localStorage.getItem("lessons")) || [];
+
+                    // 2. حذف درس با کد موردنظر
+                    lessons = lessons.filter(l => l.code !== code);
+
+                    // 3. ذخیره لیست جدید
+                    localStorage.setItem("lessons", JSON.stringify(lessons));
+
+                    // 4. حذف سطر از جدول
+                    btn.closest("tr").remove();
+
+                    // 5. آپدیت شماره ردیف‌ها
+                    document.querySelectorAll("#subjectsTableBody tr").forEach((row, i) => {
+                        row.querySelector("td").textContent = i + 1;
+                    });
+                }
+            }
+        });
+
+        // بارگذاری خودکار هنگام لود صفحه
+        window.addEventListener("DOMContentLoaded", () => {
+            renderMainTable();
+        });
+
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // دراپ‌داون باز/بسته شدن
@@ -844,43 +1309,6 @@
             });
         });
     </script>
-    <script>
-        function addSubject() {
-            // هدایت به صفحه ثبت درس حدید
-            window.location.href = "addNewSubject.html";
-        }
-    </script>
-    <script>
-        /* ---------- خواندن دروس موقت و رندر در جدول ---------- */
-        function loadTempSubjects() {
-            const students = JSON.parse(localStorage.getItem('tempSubjects')) || [];
-            const tbody = document.getElementById('subjectsTableBody');
 
-            students.forEach(sub => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-            <td>${sub.code}</td>
-            <td>${sub.name}</td>
-            <td>${sub.teachName}</td>
-            <td>${sub.classTime}</td>
-            <td data-status="${stu.status}">در حال تحصیل</td>
-            <td>${sub.year}</td>
-            <td>${sub.term}</td>
-            <td>${sub.entry}</td>
-            <td>
-                <div class="dropdown">
-    <button class="action-btn">⋮</button>
-    <ul class="dropdown-menu">
-      <li><button class="edit-btn">✏️ ویرایش</button></li>
-      <li><button class="delete-btn">❌ حذف</button></li>
-    </ul>
-  </div>
-            </td>
-        `;
-                tbody.appendChild(tr);
-            });
-        };
-    </script>
-</body>
 
 </html>
